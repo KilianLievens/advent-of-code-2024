@@ -1,6 +1,7 @@
 package advent
 
-func Transpose2D[T any](matrix [][]T) [][]T {
+func Transpose2D[T any](iMatrix *[][]T) [][]T {
+	matrix := *iMatrix
 	newMatrix := make([][]T, len(matrix[0]))
 
 	for y := range newMatrix {
