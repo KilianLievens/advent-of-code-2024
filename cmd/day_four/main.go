@@ -11,17 +11,17 @@ import (
 
 func main() {
 	exampleOneInput := advent.Read("./input/day_four/example_one.txt")
-	fmt.Printf("Example: XMAS count: %d\n", countXMAS(&exampleOneInput))
-	fmt.Printf("Example: X-MAS count: %d\n", countCrossMAS(&exampleOneInput))
+	fmt.Printf("Example: XMAS count: %d\n", countXMAS(exampleOneInput))
+	fmt.Printf("Example: X-MAS count: %d\n", countCrossMAS(exampleOneInput))
 	puzzleOneInput := advent.Read("./input/day_four/puzzle_one.txt")
-	fmt.Printf("Puzzle: XMAS count: %d\n", countXMAS(&puzzleOneInput))
-	fmt.Printf("Puzzle: X-MAS count: %d\n", countCrossMAS(&puzzleOneInput))
+	fmt.Printf("Puzzle: XMAS count: %d\n", countXMAS(puzzleOneInput))
+	fmt.Printf("Puzzle: X-MAS count: %d\n", countCrossMAS(puzzleOneInput))
 }
 
-func parse(input *[]string) [][]string {
+func parse(input []string) [][]string {
 	matrix := [][]string{}
 
-	for _, line := range *input {
+	for _, line := range input {
 		splitLine := strings.Split(line, "")
 		matrix = append(matrix, splitLine)
 	}
@@ -31,9 +31,7 @@ func parse(input *[]string) [][]string {
 	return matrix
 }
 
-func getHorizontalLines(iMatrix *[][]string) [][]string {
-	matrix := *iMatrix
-
+func getHorizontalLines(matrix [][]string) [][]string {
 	lines := [][]string{}
 
 	for _, line := range matrix {
@@ -49,9 +47,7 @@ func getHorizontalLines(iMatrix *[][]string) [][]string {
 	return lines
 }
 
-func diagonalizeNWSE(iMatrix *[][]string) [][]string {
-	matrix := *iMatrix
-
+func diagonalizeNWSE(matrix [][]string) [][]string {
 	lines := [][]string{}
 	maxCount := len(matrix) + len(matrix[0]) - 1
 
@@ -70,25 +66,25 @@ func diagonalizeNWSE(iMatrix *[][]string) [][]string {
 	return lines
 }
 
-func countXMAS(input *[]string) int {
+func countXMAS(input []string) int {
 	matrix := parse(input)
 	lines := [][]string{}
 
 	// Horizontal
-	lines = append(lines, getHorizontalLines(&matrix)...)
+	lines = append(lines, getHorizontalLines(matrix)...)
 
 	// Diagonal SWNE
-	NWSEMatrix := diagonalizeNWSE(&matrix)
-	lines = append(lines, getHorizontalLines(&NWSEMatrix)...)
+	NWSEMatrix := diagonalizeNWSE(matrix)
+	lines = append(lines, getHorizontalLines(NWSEMatrix)...)
 
-	rMatrix := advent.RotateRight2D(&matrix)
+	rMatrix := advent.RotateRight2D(matrix)
 
 	// Vertical
-	lines = append(lines, getHorizontalLines(&rMatrix)...)
+	lines = append(lines, getHorizontalLines(rMatrix)...)
 
 	// Diagonal NWSE
-	SWNEMatrix := diagonalizeNWSE(&rMatrix)
-	lines = append(lines, getHorizontalLines(&SWNEMatrix)...)
+	SWNEMatrix := diagonalizeNWSE(rMatrix)
+	lines = append(lines, getHorizontalLines(SWNEMatrix)...)
 
 	count := 0
 
@@ -105,9 +101,7 @@ func countXMAS(input *[]string) int {
 	return count
 }
 
-func isCrossMas(iMatrix *[][]string, y, x int) bool {
-	matrix := *iMatrix
-
+func isCrossMas(matrix [][]string, y, x int) bool {
 	advent.Assert(y >= 0, "y too low")
 	advent.Assert(x >= 0, "x too low")
 	advent.Assert(y+2 < len(matrix), "y too high")
@@ -124,12 +118,12 @@ func isCrossMas(iMatrix *[][]string, y, x int) bool {
 
 }
 
-func countCrossMAS(input *[]string) int {
+func countCrossMAS(input []string) int {
 	matrix := parse(input)
 	count := 0
 	for y := 0; y < len(matrix)-2; y++ {
 		for x := 0; x < len(matrix[0])-2; x++ {
-			if isCrossMas(&matrix, y, x) {
+			if isCrossMas(matrix, y, x) {
 				count++
 			}
 		}

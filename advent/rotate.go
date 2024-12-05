@@ -1,7 +1,6 @@
 package advent
 
-func RotateRight2D[T any](iMatrix *[][]T) [][]T {
-	matrix := *iMatrix
+func RotateRight2D[T any](matrix [][]T) [][]T {
 	Assert(len(matrix) > 1 && len(matrix[0]) > 1, "Input matrix too small")
 
 	newMatrix := [][]T{}
