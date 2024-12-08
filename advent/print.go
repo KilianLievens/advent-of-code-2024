@@ -4,11 +4,7 @@ import (
 	"fmt"
 )
 
-type Stringer interface {
-	String() string
-}
-
-func PrintMatrix[T Stringer](matrix [][]T) {
+func PrintMatrix[T fmt.Stringer](matrix [][]T) {
 	for _, line := range matrix {
 		for _, r := range line {
 			fmt.Printf("%s", r)
